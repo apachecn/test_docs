@@ -1,0 +1,28 @@
+language: python
+
+python:
+  -  3.9
+
+before_script:
+  - pip install -i https://pypi.tuna.tsinghua.edu.cn/simple mkdocs
+  - pip install -i https://pypi.tuna.tsinghua.edu.cn/simple mkdocs-material
+
+script:
+  - mkdocs build --clean
+
+after_script:
+  - cd site
+  - git init
+  - git config user.name ${GH_UN}
+  - git config user.email ${GH_EMAIL}
+  - git add -A
+  - git commit -am "$(date "+%Y-%m-%d %H:%M:%S")"
+  - git push "https://${GH_TOKEN}@github.com/${GH_USER}/${GH_REPO}.git" master:${GH_BRANCH} -f
+
+env:
+  global:
+    - GH_UN=jiangzhonglian
+    - GH_EMAIL=jiang-s@163.com
+    - GH_USER=apachecn
+    - GH_REPO=pytorch-doc-zh
+    - GH_BRANCH=gh-pages
